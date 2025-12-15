@@ -1,0 +1,533 @@
+<div class="monitoring-dashboard card
+         bg-surface-0 dark:bg-surface-900
+         text-surface-700 dark:text-surface-0
+         border border-surface-300 dark:border-surface-700
+         p-6 space-y-6">
+
+    <!-- Tarjeta superior -->
+    <section class="header-card
+             flex justify-between gap-4 pb-4 border-b border-surface-300 dark:border-surface-700">
+
+        <div class="flex items-center gap-3">
+            <div class="flex items-center justify-center
+                w-20 h-20 rounded-full
+                bg-surface-100 dark:bg-surface-800
+                text-surface-700 dark:text-surface-0 text-3xl border border-surface-300 dark:border-surface-700">
+                🖥️
+            </div>
+            <h1 class="text-3xl font-semibold text-surface-900 dark:text-surface-0">
+                Monitoring Dashboard
+            </h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <ng-container *ngIf="monitor_status as status">
+                <!-- RUNNING -->
+                <span *ngIf="status.consumer.running; else inactive" class="status-pill status-running
+                         inline-flex items-center gap-2
+                         px-3 py-1 rounded-full text-xs font-semibold
+                        bg-primary text-primary-contrast
+                        hover:bg-primary-emphasis
+                        transition-colors">
+                    <span class="status-dot inline-block w-2 h-2 rounded-full
+                            bg-primary-100 text-primary-contrast dark:bg-primary-600
+                            transition-colors">
+                    </span>
+                    RUNNING
+                </span>
+
+                <!-- INACTIVE -->
+                <ng-template #inactive>
+                    <span class="status-pill status-inactive
+                             inline-flex items-center gap-2
+                             px-3 py-1 rounded-full text-xs font-semibold
+                             bg-red-100 text-red-800
+                             dark:bg-red-900 dark:text-red-100">
+                        <span class="status-dot inline-block w-2 h-2 rounded-full
+                                 bg-red-500 dark:bg-red-400">
+                        </span>
+                        INACTIVE
+                    </span>
+                </ng-template>
+            </ng-container>
+
+            <div class="api-badge w-auto
+                     flex items-center gap-2
+                     px-3 py-1 rounded-full
+                     bg-surface-100 dark:bg-surface-800
+                     border border-surface-300 dark:border-surface-700
+                     text-xs font-medium hover:bg-surface-200 dark:hover:bg-surface-600">
+                <div>
+                    <a href="https://suite-5.saas.comerzzia.com/czz-to-erp-processor/swagger-ui/index.html"
+                        title="OpenAPI JSON" class="w-auto flex items-center">
+                        <div class="mr-2">
+                            <img src="/images/openapi-logo.png" class="h-6" alt="OpenAPI">
+                        </div>
+                        <div>
+                            <span>OpenAPI</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tarjetas métricas -->
+    <section class="cards-row grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <!-- Received -->
+        <article class="card
+                 bg-surface-50 dark:bg-surface-900
+                 border border-surface-300 dark:border-surface-700
+                 rounded-lg p-4 flex flex-col gap-2">
+            <header class="gap-2 text-sm font-medium">
+                <span class="metric-icon text-lg">📥</span>
+                <span class="text-xl">Received</span>
+            </header>
+
+            <div class="metric-divider h-px bg-surface-200 dark:bg-surface-700 my-2"></div>
+
+            <div class="metric-value text-3xl font-semibold text-surface-900 dark:text-surface-0">
+                {{monitor_status?.metrics?.messages_received}}
+            </div>
+            <div class="metric-subtitle text-xs text-surface-500 dark:text-surface-400">
+                Total messages
+            </div>
+        </article>
+
+        <!-- Processed -->
+        <article class="card
+                 bg-surface-50 dark:bg-surface-900
+                 border border-surface-300 dark:border-surface-700
+                 rounded-lg p-4 flex flex-col gap-2">
+            <header class="gap-2 text-sm font-medium">
+                <span class="metric-icon text-lg">✅</span>
+                <span class="text-xl">Processed</span>
+            </header>
+
+            <div class="metric-divider h-px bg-surface-200 dark:bg-surface-700 my-2"></div>
+
+            <div class="metric-value text-3xl font-semibold text-surface-900 dark:text-surface-0">
+                {{monitor_status?.metrics?.messages_processed}}
+            </div>
+            <div class="text-xs text-surface-500 dark:text-surface-400">
+                Successful
+            </div>
+        </article>
+
+        <!-- Failed -->
+        <article class="card
+                 bg-surface-50 dark:bg-surface-900
+                 border border-surface-300 dark:border-surface-700
+                 rounded-lg p-4 flex flex-col gap-2">
+            <header class="gap-2 text-sm font-medium">
+                <span class="metric-icon text-lg">❌</span>
+                <span class="text-xl">Failed</span>
+            </header>
+
+            <div class="metric-divider h-px bg-surface-200 dark:bg-surface-700 my-2"></div>
+
+            <div class="metric-value text-3xl font-semibold text-red-600 dark:text-red-400">
+                {{monitor_status?.metrics?.messages_failed}}
+            </div>
+            <div class="text-xs text-surface-500 dark:text-surface-400">
+                Errors
+            </div>
+        </article>
+
+        <!-- Error Topic -->
+        <article class="card
+                bg-surface-50 dark:bg-surface-900
+                border border-surface-300 dark:border-surface-700
+                rounded-lg flex flex-col gap-2">
+            <header class="gap-2 text-sm font-medium">
+                <span class="metric-icon text-lg">❌</span>
+                <span class="text-xl">Error Topic</span>
+            </header>
+
+            <div class="metric-divider h-px bg-surface-200 dark:bg-surface-700 my-2"></div>
+
+            <div class="metric-value metric-value-error text-3xl font-semibold text-orange-600 dark:text-orange-400">
+                {{monitor_status?.metrics?.messages_sent_to_error_topic}}
+            </div>
+            <div class="text-xs text-surface-500 dark:text-surface-400">
+                Sent to error
+            </div>
+        </article>
+    </section>
+
+    <!-- System Health -->
+    <section class="system-health-card
+             bg-surface-50 dark:bg-surface-900
+             border border-surface-300 dark:border-surface-700
+             rounded-lg p-4 space-y-4">
+        <div class="flex items-center gap-2">
+            <span class="text-lg">🔋</span>
+            <span class="text-lg">
+                System Health
+            </span>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
+            <!-- Overall Status -->
+            <article class="flex flex-col gap-2">
+                <div class="text-xs font-medium text-surface-500 dark:text-surface-400">
+                    OVERALL STATUS
+                </div>
+                <ng-container *ngIf="monitor_health as health">
+                    <div *ngIf="health.health === 'HEALTHY' && health.status === 'HEALTHY'; else unhealthy"
+                        class="w-full h-2 rounded-full bg-emerald-100 dark:bg-emerald-900">
+                        <div class="h-2 rounded-full bg-emerald-500 dark:bg-emerald-400">
+                        </div>
+                    </div>
+                    <ng-template #unhealthy>
+                        <div class="w-full h-2 rounded-full bg-red-100 dark:bg-red-900">
+                            <div class="h-2 rounded-full bg-red-500 dark:bg-red-400">
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-container>
+            </article>
+
+            <!-- Success Rate -->
+            <article class="health-tile flex flex-col gap-1">
+                <div class="health-tile__label text-xs font-medium text-surface-500 dark:text-surface-400">
+                    SUCCESS RATE
+                </div>
+                <div class="health-tile__value text-lg font-semibold">
+                    {{formatSuccessRate(monitor_health?.success_rate)}}
+                </div>
+            </article>
+
+            <!-- Consumer Status -->
+            <article class="health-tile flex flex-col gap-1">
+                <div class="health-tile__label text-xs font-medium text-surface-500 dark:text-surface-400">
+                    CONSUMER STATUS
+                </div>
+                <div class="health-tile__value text-lg font-semibold">
+                    {{monitor_health?.consumer_status}}
+                </div>
+            </article>
+
+            <!-- Uptime -->
+            <article class="health-tile flex flex-col gap-1">
+                <div class="health-tile__label text-xs font-medium text-surface-500 dark:text-surface-400">
+                    UPTIME
+                </div>
+                <div class="health-tile__value text-lg font-semibold">
+                    {{formatUptime(monitor_health?.consumer_uptime)}}
+                </div>
+            </article>
+
+            <!-- Total Messages -->
+            <article class="health-tile flex flex-col gap-1">
+                <div class="health-tile__label text-xs font-medium text-surface-500 dark:text-surface-400">
+                    TOTAL MESSAGES
+                </div>
+                <div class="health-tile__value text-lg font-semibold">
+                    {{monitor_health?.total_messages}}
+                </div>
+            </article>
+
+            <!-- Consecutive Errors -->
+            <article class="health-tile flex flex-col gap-1">
+                <div class="health-tile__label text-xs font-medium text-surface-500 dark:text-surface-400">
+                    CONSECUTIVE ERRORS
+                </div>
+                <div class="health-tile__value text-lg font-semibold">
+                    {{monitor_health?.consecutive_errors}}
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Configured Entities -->
+    <section class="configured-entities-card
+             bg-surface-50 dark:bg-surface-900
+             border border-surface-300 dark:border-surface-700
+             rounded-lg p-4 space-y-4">
+        <p-tabs value="table">
+            <p-tablist>
+                <p-tab value="table">⚙️ Configured Entities</p-tab>
+                <p-tab value="charts">📈 Graph</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+                <p-tabpanel value="table">
+                    <div class="configured-entities-card__table-wrapper overflow-auto">
+                        <table class="configured-entities-table w-full text-xs">
+                            <thead>
+                                <tr class="bg-surface-200 dark:bg-surface-800">
+                                    <th class="col-type text-left p-2 font-semibold">TYPE</th>
+                                    <th class="col-name text-center p-2 font-semibold">NAME</th>
+                                    <th class="col-service text-center p-2 font-semibold">SERVICE</th>
+                                    <th class="col-number text-center p-2 font-semibold">
+                                        <span class="header-icon mr-1">📥</span>
+                                        RECEIVED
+                                    </th>
+                                    <th class="col-number text-right p-2 font-semibold">
+                                        <span class="header-icon mr-1">✅</span>
+                                        SUCCESS
+                                    </th>
+                                    <th class="col-number text-right p-2 font-semibold">
+                                        <span class="header-icon mr-1">❌</span>
+                                        FAILURES
+                                    </th>
+                                    <th class="col-number text-right p-2 font-semibold">
+                                        <span class="header-icon mr-1">📈</span>
+                                        SUCCESS RATE
+                                    </th>
+                                    <th class="col-number text-right p-2 font-semibold">
+                                        <span class="header-icon mr-1">⏱️</span>
+                                        AVG. TIME
+                                    </th>
+                                    <th class="col-status text-center p-2 font-semibold">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of configuredEntitiesRows"
+                                    class="border-t border-surface-300 dark:border-surface-700 hover:bg-gray-300 dark:hover:bg-gray-500 text-base">
+                                    <td class="cell-type p-2">
+                                        <span class="cell-type__value inline-flex px-2 py-0.5">
+                                            {{row.type}}
+                                        </span>
+                                    </td>
+                                    <td class="p-2 text-sm">{{ row.name }}</td>
+                                    <td class="p-2 text-sm">{{ row.serviceBean }}</td>
+                                    <td class="cell-number p-2 text-right">{{ row.received }}</td>
+                                    <td
+                                        class="cell-number cell-number--success p-2 text-right text-emerald-600 dark:text-emerald-400">
+                                        {{ row.success }}
+                                    </td>
+                                    <td
+                                        class="cell-number cell-number--failure p-2 text-right text-red-600 dark:text-red-400">
+                                        {{ row.failure }}
+                                    </td>
+                                    <td class="cell-number p-2 text-right">
+                                        <ng-container *ngIf="row.successRate !== null; else noRate">
+                                            {{ row.successRate | number:'1.0-1' }}%
+                                        </ng-container>
+                                        <ng-template #noRate>-</ng-template>
+                                    </td>
+                                    <td class="cell-number p-2 text-right text-sm">
+                                        {{ row.avgTimeMs }}ms
+                                    </td>
+                                    <td class="cell-status p-2">
+                                        <span class="status-pill inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium 
+                                bg-primary text-primary-contrast
+                                hover:bg-primary-emphasis
+                                transition-colors">
+                                            <span class="status-pill__icon" *ngIf="row.status === 'ACTIVE'">✔</span>
+                                            {{ row.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </p-tabpanel>
+                <p-tabpanel value="charts">
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div
+                            class="card bg-surface-0 dark:bg-surface-900 border border-surface-300 dark:border-surface-700 rounded-lg p-4">
+                            <div class="font-semibold text-lg mb-4">Linear</div>
+                            <p-chart type="line" [data]="entitiesLineData" [options]="entitiesLineOptions"
+                                styleClass="h-72"></p-chart>
+                        </div>
+
+                        <div
+                            class="card bg-surface-0 dark:bg-surface-900 border border-surface-300 dark:border-surface-700 rounded-lg p-4">
+                            <div class="font-semibold text-lg mb-4">Bar</div>
+                            <p-chart type="bar" [data]="entitiesBarData" [options]="entitiesBarOptions"
+                                styleClass="h-72"></p-chart>
+                        </div>
+                    </div>
+                </p-tabpanel>
+            </p-tabpanels>
+        </p-tabs>
+    </section>
+
+    <!-- Topics Configuration -->
+    <section class="topics-config-card
+             bg-surface-50 dark:bg-surface-900
+             border border-surface-300 dark:border-surface-700
+             rounded-lg p-4 space-y-4">
+        <header class="topics-config-card__header flex items-center justify-between">
+            <div class="topics-config-card__header-left flex items-center gap-2">
+                <span class="topics-config-card__header-icon text-lg">📡</span>
+                <span class="topics-config-card__header-title text-lg font-semibold">
+                    Topics Configuration
+                </span>
+            </div>
+        </header>
+
+        <div class="topics-config-card__table-wrapper overflow-auto">
+            <table class="topics-config-table w-full text-xs">
+                <thead>
+                    <tr class="bg-surface-100 dark:bg-surface-800">
+                        <th class="col-type text-left p-2 font-semibold">ENTITY</th>
+                        <th class="col-type text-left p-2 font-semibold">MAIN TOPIC</th>
+                        <th class="col-topic-id text-left p-2 font-semibold">DLQ TOPIC</th>
+                        <th class="col-consumer-group text-left p-2 font-semibold">CONSUMER GROUP</th>
+                        <th class="col-status text-left p-2 font-semibold">STATUS</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let row of topicsConfigRows"
+                        class="border-t border-surface-300 dark:border-surface-700 hover:bg-gray-300 dark:hover:bg-gray-500">
+                        <td class="cell-type p-2">
+                            <span class="inline-flex px-2 py-0.5 text-base">
+                                {{ row.entity }}
+                            </span>
+                        </td>
+                        <td class="p-2 text-sm">{{ row.main_topic }}</td>
+                        <td class="p-2 text-sm">{{ row.dlqTopic }}</td>
+                        <td class="p-2 text-sm">{{ row.consumerGroup }}</td>
+                        <td class="cell-status p-2 text-sm">
+                            <span class="status-pill inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium bg-primary text-primary-contrast
+                                hover:bg-primary-emphasis
+                                transition-colors">
+                                <span class="status-pill__icon" *ngIf="row.status === 'CONNECTED'">✔</span>
+                                {{ row.status }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </section>
+
+    <!-- System Configuration -->
+    <section class="system-config-card
+             bg-surface-50 dark:bg-surface-900
+             border border-surface-300 dark:border-surface-700
+             rounded-lg p-4 space-y-4">
+        <header class="system-config-card__header flex items-center justify-between">
+            <div class="system-config-card__header-left flex items-center gap-2">
+                <span class="system-config-card__header-icon text-lg">⚙️</span>
+                <span class="system-config-card__header-title text-lg font-semibold">
+                    System Configuration
+                </span>
+            </div>
+        </header>
+
+        <div class="system-config-card__toolbar">
+            <button class="config-toggle-btn
+                     inline-flex items-center gap-2 px-3 py-1 rounded
+                     text-lg font-medium
+                     bg-primary text-primary-contrast
+                     hover:bg-primary-emphasis
+                     transition-colors" (click)="toggleConfig()">
+                <span class="config-toggle-btn__icon">📋</span>
+                {{ showConfig ? 'HIDE CONFIGURATION' : 'SHOW CONFIGURATION' }}
+            </button>
+        </div>
+
+        <div class="system-config-panels grid gap-4 md:grid-cols-3
+                 transition-all duration-200" [class.system-config-panels--open]="showConfig"
+            [class.system-config-panels--closed]="!showConfig">
+            <!-- Statistics -->
+            <section class="config-panel
+                     bg-surface-0 dark:bg-surface-900
+                     border border-surface-300 dark:border-surface-700
+                     rounded-lg p-4 space-y-2">
+                <header class="config-panel__header flex items-center gap-2 text-base font-semibold">
+                    <span class="config-panel__icon">📊</span>
+                    <span class="config-panel__title">Statistics</span>
+                </header>
+
+                <div class="config-panel__body space-y-1">
+                    <div class="config-panel__row flex justify-between text-base">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Total configured entities:
+                        </div>
+                        <div class="config-panel__value config-panel__value--highlight font-semibold">
+                            {{ monitor_config?.entities_count }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Consumer Configuration -->
+            <section class="config-panel
+                     bg-surface-0 dark:bg-surface-900
+                     border border-surface-300 dark:border-surface-700
+                     rounded-lg p-4 space-y-2">
+                <header class="config-panel__header flex items-center gap-2 text-base font-semibold">
+                    <span class="config-panel__icon">⚙️</span>
+                    <span class="config-panel__title">Consumer Configuration</span>
+                </header>
+
+                <div class="config-panel__body space-y-1 text-base">
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Enable Auto Commit
+                        </div>
+                        <div class="config-panel__value">
+                            {{ monitor_config?.consumer?.enable_auto_commit }}
+                        </div>
+                    </div>
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Auto Offset Reset
+                        </div>
+                        <div class="config-panel__value">
+                            {{monitor_config?.consumer?.auto_offset_reset}}
+                        </div>
+                    </div>
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Base Group Id
+                        </div>
+                        <div class="config-panel__value">
+                            {{monitor_config?.consumer?.base_group_id}}
+                        </div>
+                    </div>
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Max Poll Records
+                        </div>
+                        <div class="config-panel__value">
+                            {{monitor_config?.consumer?.max_poll_records}}
+                        </div>
+                    </div>
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Concurrency
+                        </div>
+                        <div class="config-panel__value">
+                            {{monitor_config?.consumer?.concurrency}}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Retry Policy -->
+            <section class="config-panel
+                     bg-surface-0 dark:bg-surface-900
+                     border border-surface-300 dark:border-surface-700
+                     rounded-lg p-4 space-y-2">
+                <header class="config-panel__header flex items-center gap-2 text-base font-semibold">
+                    <span class="config-panel__icon">🔁</span>
+                    <span class="config-panel__title">Retry Policy</span>
+                </header>
+                <div class="config-panel__body space-y-1 text-base">
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            MaxRetries
+                        </div>
+                        <div class="config-panel__value">
+                            {{monitor_config?.retry?.maxRetries}}
+                        </div>
+                    </div>
+                    <div class="config-panel__row flex justify-between">
+                        <div class="config-panel__label text-surface-500 dark:text-surface-400">
+                            Enabled
+                        </div>
+                        <div class="config-panel__value">
+                            {{monitor_config?.retry?.enabled}}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+</div>

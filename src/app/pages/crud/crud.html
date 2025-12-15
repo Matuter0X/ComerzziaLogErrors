@@ -1,0 +1,118 @@
+<h5 class="mb-4 text-xl font-semibold">
+    Búsqueda de error en interfaces
+</h5>
+
+<p-toolbar styleClass="mb-6 rounded-lg shadow-sm px-4 py-2 border">
+    <ng-template #start>
+        <div class="flex flex-wrap items-center gap-3">
+            <p-button type="button" label="Consultar" severity="info" outlined (click)="consultarLogs()"
+                styleClass="!px-4 !py-2 !text-sm"></p-button>
+        </div>
+    </ng-template>
+
+    <ng-template #end>
+        <div class="flex flex-wrap items-center gap-2">
+            <p-button severity="danger" label="Borrar" icon="pi pi-trash" [disabled]="selectedLogs.length === 0"
+                outlined (onClick)="borrar()" styleClass="mr-2 !px-3 !py-2 !text-sm"></p-button>
+
+            <p-button label="Exportar Registros" icon="pi pi-upload" [disabled]="!logs.length" severity="secondary"
+                (click)="exportCSV()" styleClass="!px-3 !py-2 !text-sm"></p-button>
+        </div>
+    </ng-template>
+</p-toolbar>
+
+<div class="rounded-lg shadow-sm overflow-hidden">
+    <p-table #dt [rows]="10" [columns]="cols" [paginator]="true" [value]="logs" [(selection)]="selectedLogs"
+        [globalFilterFields]="['classId', 'objectId', 'lastDocumentId']" [rowHover]="true" dataKey="errorUid"
+        [style]="{ width: 'auto' }" *ngIf="foundLogErrors"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} errores" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 15, 20]" styleClass="w-full table-fixed" [scrollable]="true" scrollHeight="583px">
+
+        <!-- CAPTION -->
+        <ng-template pTemplate="caption">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <h5 class="text-base font-semibold mb-0">
+                    Resultados
+                </h5>
+
+                <p-iconfield class="w-full md:w-72">
+                    <p-inputicon styleClass="pi pi-search" />
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Filtrar..." class="w-full text-sm" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+
+        <!-- HEADER -->
+        <ng-template pTemplate="header">
+            <tr class="text-xs uppercase tracking-wide">
+                <th class="w-10 text-center align-middle">
+                    <p-tableHeaderCheckbox />
+                </th>
+                <th class="px-3 py-2 text-center align-middle">Entidad</th>
+                <th class="px-3 py-2 text-center align-middle">Objeto</th>
+                <th class="px-3 py-2 text-center align-middle" pSortableColumn="beginDate">
+                    <div class="flex items-center justify-center gap-1">
+                        <span>Fecha inicio</span>
+                        <p-sortIcon field="beginDate" />
+                    </div>
+                </th>
+                <th class="px-3 py-2 text-center align-middle">Último error</th>
+                <th class="px-3 py-2 text-center align-middle">Último documento</th>
+                <th class="px-3 py-2 text-center align-middle">Tiendas implicadas</th>
+                <th class="px-3 py-2 min-w-[28rem] text-center align-middle">
+                    Último mensaje
+                </th>
+                <th class="px-3 py-2 text-center align-middle">Traza</th>
+            </tr>
+        </ng-template>
+
+        <!-- BODY -->
+        <ng-template pTemplate="body" let-log>
+            <tr class="border-t hover:bg-gray-50 transition-colors">
+                <td class="w-10 text-center align-middle">
+                    <p-tableCheckbox [value]="log" />
+                </td>
+                <td class="px-3 py-2 text-center align-middle font-medium">
+                    {{ log.classId }}
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                    {{ log.objectId }}
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                    {{ log.beginDate | date:'yyyy-MM-dd HH:mm:ss' }}
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                    {{ log.lastError }}
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                    {{ log.lastDocumentId }}
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                    {{ log.shopsInvolved }}
+                </td>
+
+                <!-- Último mensaje -->
+                <td class="px-3 py-2 text-center align-middle">
+                    <div class="break-words max-w-3xl">
+                        {{ log.lastMessage }}
+                    </div>
+                </td>
+
+                <!-- Botón Traza -->
+                <td class="px-3 py-2 text-center align-middle">
+                    <button pButton type="button" icon="pi pi-file-o" class="p-button-text p-button-rounded"
+                        pTooltip="Ver traza" tooltipPosition="top" (click)="showTraceDialog(log)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+</div>
+<p-dialog header="Ver traza" [(visible)]="traceDialogVisible" [modal]="true" [style]="{ width: '60vw' }"
+    [contentStyle]="{ 'max-height': '60vh', 'overflow': 'auto' }" [draggable]="false" [resizable]="false"
+    styleClass="rounded-lg shadow-md">
+    <pre class="whitespace-pre-wrap font-mono text-xs leading-relaxed">
+{{ currentTraceMessage }}
+    </pre>
+</p-dialog>

@@ -1,0 +1,8 @@
+{
+  "/czz-to-erp-processor": {
+    "target": "https://suite-5.saas.comerzzia.com",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
