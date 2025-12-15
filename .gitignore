@@ -1,43 +1,59 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+####################################
+# Angular / Node
+####################################
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# Dependencias
+node_modules/
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# Builds
+dist/
+out-tsc/
 
-# IDEs and editors
+# Angular CLI cache (en tu ZIP aparece .angular/cache/...)
+.angular/
+# (si prefieres conservar la carpeta pero no el cache, usa esto en vez de la línea anterior)
+# .angular/cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Tests
+coverage/
+
+# Parcel / Vite / otros bundlers
+.vite/
+.vite-cache/
+.esbuild/
+.cache/
+
+####################################
+# TypeScript incremental build
+####################################
+*.tsbuildinfo
+
+####################################
+# Entornos / secretos
+####################################
+.env
+.env.*
+!.env.example
+
+####################################
+# Editor / IDE
+####################################
+.vscode/
 .idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
-
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-.vscode
-
-# System files
+####################################
+# Sistema operativo
+####################################
 .DS_Store
 Thumbs.db
