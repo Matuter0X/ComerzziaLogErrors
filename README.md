@@ -63,4 +63,5 @@ Para utilizar el botón de ajustes, sencillamente pulsamos sobre él y se nos ab
 
     - Menu Profile: Permite ajustar el menu al comienzo o final de la web (start / end)
     - Menu Themes: Permite ajustar el color del menu de navegacion
-    - Topbar Themes: Permite ajustar el color del menu horizontal superior topbar 
+    - Topbar Themes: Permite ajustar el color del menu horizontal superior topbar
+    
