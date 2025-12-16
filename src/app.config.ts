@@ -46,6 +46,7 @@ export const appConfig: ApplicationConfig = {
             inputStyle: 'filled',
             theme: { preset: MyPreset, options: { darkModeSelector: '.app-dark' } }
         }),
+        // Llamada a las apis generadas por openapi
         provideApi({ basePath: 'https://suite-5.saas.comerzzia.com/erp-to-czz-processor' }),
         provideapi2({ basePath: '/czz-to-erp-processor' })
     ]
