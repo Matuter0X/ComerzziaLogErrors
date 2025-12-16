@@ -9,10 +9,8 @@ node_modules/
 dist/
 out-tsc/
 
-# Angular CLI cache (en tu ZIP aparece .angular/cache/...)
+# Angular CLI cache
 .angular/
-# (si prefieres conservar la carpeta pero no el cache, usa esto en vez de la línea anterior)
-# .angular/cache/
 
 # Logs
 npm-debug.log*
