@@ -7,8 +7,8 @@ import { appRoutes } from './app.routes';
 import Material from '@primeuix/themes/material';
 import { definePreset } from '@primeuix/themes';
 import { CustomRouteReuseStrategy } from '@/route-reuse.strategy';
-import { provideApi } from '@openapi/provide-api';
-import { provideApi as provideapi2 } from '@openapi2/provide-api';
+import { provideApi } from '@/openapi/openapi-erp-to-czz-input/provide-api';
+import { provideApi as provideapi2 } from '@/openapi/openapi-czz-to-erp-output/provide-api';
 
 const MyPreset = definePreset(Material, {
     semantic: {
@@ -46,7 +46,7 @@ export const appConfig: ApplicationConfig = {
             inputStyle: 'filled',
             theme: { preset: MyPreset, options: { darkModeSelector: '.app-dark' } }
         }),
-        // Llamada a las apis generadas por openapi
+        // Llamada a las
         provideApi({ basePath: 'https://suite-5.saas.comerzzia.com/erp-to-czz-processor' }),
         provideapi2({ basePath: '/czz-to-erp-processor' })
     ]

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { MonitorControllerService } from '@openapi/index';
-import { monitorControllerConfigBean, monitorControllerEntitiesBean, MonitorControllerEntityTypeBean, MonitorControllerHealthBean, MonitorControllerMetricsBean, MonitorControllerStatusBean } from '@openapi/model/monitorControllerBean';
+import { MonitorControllerService } from '@/openapi/openapi-erp-to-czz-input/index';
+import { monitorControllerConfigBean, monitorControllerEntitiesBean, MonitorControllerEntityTypeBean, MonitorControllerHealthBean, MonitorControllerMetricsBean, MonitorControllerStatusBean } from '@/openapi/openapi-erp-to-czz-input/model/monitorControllerBean';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { TabsModule } from 'primeng/tabs'; // o el módulo de tabs de tu versión

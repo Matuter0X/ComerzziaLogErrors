@@ -20,8 +20,8 @@
         "baseUrl": "./",
         "paths": {
             "@/*": ["src/app/*"],
-            "@openapi/*": ["openapi/*"],
-            "@openapi2/*": ["openapi2/*"]
+            "@openapi/*": ["src/app/openapi/openapi-erp-to-czz-input/*"],
+            "@openapi2/*": ["src/app/openapi/openapi-czz-to-erp-output/*"]
         }
     },
     "angularCompilerOptions": {
