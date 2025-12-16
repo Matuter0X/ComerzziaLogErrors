@@ -22,7 +22,9 @@
         "@angular/router": "^20",
         "@primeuix/themes": "^1.2.1",
         "@tailwindcss/postcss": "^4.1.11",
+        "@types/file-saver": "^2.0.7",
         "chart.js": "^4.4.2",
+        "file-saver": "^2.0.5",
         "primeclt": "^0.1.5",
         "primeicons": "^7.0.0",
         "primeng": "^20.4.0",
@@ -30,6 +32,7 @@
         "rxjs": "~7.8.2",
         "tailwindcss-primeui": "^0.6.1",
         "tslib": "^2.3.0",
+        "xlsx": "^0.18.5",
         "zone.js": "~0.15.1"
     },
     "devDependencies": {

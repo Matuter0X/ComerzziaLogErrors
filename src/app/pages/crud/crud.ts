@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild} from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { IntegrationErrorsService } from '@openapi/api/integrationErrors.service';
 import { EntityIntegrationLogBean } from '@openapi/model/entityIntegrationLogBean';
 import { forkJoin } from 'rxjs';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 interface Column {
     field: string;
@@ -91,20 +93,20 @@ export class Crud implements OnInit {
     @ViewChild('dt') dt!: Table;
 
     cols: Column[] = [];   // columnas visibles/exportables
-    
+
     ngOnInit() {
         this.cols = [
-            { field: 'errorUid',        header: 'ID Error' },
-            { field: 'classId',         header: 'Clase' },
-            { field: 'objectId',        header: 'ID Objeto' },
-            { field: 'codalm',          header: 'Cód. almacén' },
-            { field: 'beginDate',       header: 'Fecha inicio' },
-            { field: 'endDate',         header: 'Fecha fin' },
-            { field: 'lastDocumentId',  header: 'Último doc.' },
-            { field: 'lastError',       header: 'Fecha último error' },
-            { field: 'lastMessage',     header: 'Último mensaje' },
-            { field: 'lastTraceMessage',header: 'Traza' },
-            { field: 'shopsInvolved',   header: 'Tiendas implicadas' }
+            { field: 'errorUid', header: 'ID Error' },
+            { field: 'classId', header: 'Clase' },
+            { field: 'objectId', header: 'ID Objeto' },
+            { field: 'codalm', header: 'Cód. almacén' },
+            { field: 'beginDate', header: 'Fecha inicio' },
+            { field: 'endDate', header: 'Fecha fin' },
+            { field: 'lastDocumentId', header: 'Último doc.' },
+            { field: 'lastError', header: 'Fecha último error' },
+            { field: 'lastMessage', header: 'Último mensaje' },
+            { field: 'lastTraceMessage', header: 'Traza' },
+            { field: 'shopsInvolved', header: 'Tiendas implicadas' }
         ];
     }
 
@@ -134,77 +136,113 @@ export class Crud implements OnInit {
         this.traceDialogVisible = true;
     }
 
-    //Funcion para exportar el csv de los datos de la tabla (OPCIONAL)
-    exportCSV() {
-        this.dt.exportCSV();
+    //Funcion para exportar el excel de los datos de la tabla (OPCIONAL)
+    exportExcel() {
+        // Si no hay datos, no hacer nada
+        if (!this.logs || !this.logs.length) {
+            return;
+        }
+
+        // Solo las columnas que quieres en el Excel (puedes ajustar nombres y campos)
+        const data = this.logs.map((log: any) => ({
+            'ID Error': log.errorUid,
+            'Clase': log.classId,
+            'ID Objeto': log.objectId,
+            'Cd. almacén': log.codalm,
+            'Fecha inicio': log.beginDate,
+            'Fecha fin': log.endDate,
+            'Último doc.': log.lastDocumentId,
+            'Fecha último error': log.lastError,
+            'Último mensaje': log.lastMessage,
+            'Tiendas implicadas': log.shopsInvolved
+        }));
+
+        // Crear hoja y libro de Excel
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+        const workbook: XLSX.WorkBook = {
+            Sheets: { Logs: worksheet },
+            SheetNames: ['Logs']
+        };
+
+        // Generar el buffer del xlsx
+        const excelBuffer: ArrayBuffer = XLSX.write(workbook, {
+            bookType: 'xlsx',
+            type: 'array'
+        });
+
+        // Crear Blob y descargar
+        const blob = new Blob([excelBuffer], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        });
+        saveAs(blob, `integration-errors_${new Date().getTime()}.xlsx`);
     }
 
     //Funcion para borrar los logs
     borrar() {
-    
-    if (this.selectedLogs.length === 0) {
-        return;
-    }
 
-    const borrarTodos = this.selectedLogs.length === this.logs.length;
-
-    if (borrarTodos) {
-        //TODOS seleccionados → DELETE /errors
-        if (!confirm('¿Seguro que quieres borrar TODOS los errores?')) {
-        return;
+        if (this.selectedLogs.length === 0) {
+            return;
         }
 
-        this.loading = true;
-        this.errorMessage = null;
+        const borrarTodos = this.selectedLogs.length === this.logs.length;
 
-        //método DELETE /errors
-        this.integrationErrorsService.deleteAllErrors().subscribe({
-        next: () => {
-            this.loading = false;
-            this.selectedLogs = [];
-            this.consultarLogs();  // recarga la lista
-        },
-        error: (err) => {
-            console.error(err);
-            this.loading = false;
-            this.errorMessage = 'Error al borrar todos los errores.';
+        if (borrarTodos) {
+            //TODOS seleccionados → DELETE /errors
+            if (!confirm('¿Seguro que quieres borrar TODOS los errores?')) {
+                return;
+            }
+
+            this.loading = true;
+            this.errorMessage = null;
+
+            //método DELETE /errors
+            this.integrationErrorsService.deleteAllErrors().subscribe({
+                next: () => {
+                    this.loading = false;
+                    this.selectedLogs = [];
+                    this.consultarLogs();  // recarga la lista
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.loading = false;
+                    this.errorMessage = 'Error al borrar todos los errores.';
+                }
+            });
+
+        } else {
+
+            //caso: solo algunos seleccionados → DELETE /errors/{errorUid}
+            if (!confirm(`¿Borrar ${this.selectedLogs.length} error(es) seleccionado(s)?`)) {
+                return;
+            }
+
+            this.loading = true;
+            this.errorMessage = null;
+
+            const peticiones = this.selectedLogs
+                .filter(log => !!log.errorUid)
+                .map(log =>
+                    //método DELETE /errors/{errorUid}
+                    this.integrationErrorsService.deleteError(log.errorUid as string)
+                );
+
+            if (peticiones.length === 0) {
+                this.loading = false;
+                return;
+            }
+
+            forkJoin(peticiones).subscribe({
+                next: () => {
+                    this.loading = false;
+                    this.selectedLogs = [];
+                    this.consultarLogs();  // recarga lista ya sin los borrados
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.loading = false;
+                    this.errorMessage = 'Error al borrar los errores seleccionados.';
+                }
+            });
         }
-        });
-
-    } else {
-
-        //caso: solo algunos seleccionados → DELETE /errors/{errorUid}
-        if (!confirm(`¿Borrar ${this.selectedLogs.length} error(es) seleccionado(s)?`)) {
-        return;
-        }
-
-        this.loading = true;
-        this.errorMessage = null;
-
-        const peticiones = this.selectedLogs
-        .filter(log => !!log.errorUid)
-        .map(log =>
-            //método DELETE /errors/{errorUid}
-            this.integrationErrorsService.deleteError(log.errorUid as string)
-        );
-
-        if (peticiones.length === 0) {
-        this.loading = false;
-        return;
-        }
-
-        forkJoin(peticiones).subscribe({
-        next: () => {
-            this.loading = false;
-            this.selectedLogs = [];
-            this.consultarLogs();  // recarga lista ya sin los borrados
-        },
-        error: (err) => {
-            console.error(err);
-            this.loading = false;
-            this.errorMessage = 'Error al borrar los errores seleccionados.';
-        }
-        });
-    }
     }
 }
