@@ -10,9 +10,9 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', redirectTo: 'view-errors', pathMatch: 'full' },
-            { path: 'view-errors', component: Crud, data: { breadcrumb: 'Visor Errores' } },
-            { path: 'view-monitoring-errors-input', component: ViewMonitoringErrorsInput, data: { breadcrumb: 'Monitorear Entrada' } },
-            { path: 'view-monitoring-errors-output', component: ViewMonitoringErrorsOutput, data: { breadcrumb: 'Monitorear Salida' } }
+            { path: 'view-errors', component: Crud, data: { breadcrumb: 'View Errors' } },
+            { path: 'view-monitoring-errors-input', component: ViewMonitoringErrorsInput, data: { breadcrumb: 'Monitor Input' } },
+            { path: 'view-monitoring-errors-output', component: ViewMonitoringErrorsOutput, data: { breadcrumb: 'Monitor Output' } }
         ]
     }
 ];

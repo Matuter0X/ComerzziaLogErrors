@@ -22,21 +22,21 @@ export class AppMenu {
 
     model: MenuItem[] = [
         {
-            label: 'Menú Principal',
+            label: 'Main Menu',
             icon: 'pi pi-home',
             items: [
                     {
-                        label: 'Visor de Errores',
+                        label: 'View Errors',
                         icon: 'pi pi-fw pi-eye',
                         routerLink: ['/view-errors']
                     },
                     {
-                        label: 'Monitorizar Entrada',
+                        label: 'Monitor Input',
                         icon: 'pi pi-fw pi-arrow-circle-right',
                         routerLink: ['/view-monitoring-errors-input']
                     },
                     {
-                        label: 'Monitorizar Salida',
+                        label: 'Monitor Output',
                         icon: 'pi pi-fw pi-arrow-circle-left',
                         routerLink: ['/view-monitoring-errors-output']
                     }
