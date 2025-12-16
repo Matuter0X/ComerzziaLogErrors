@@ -1,21 +1,21 @@
 <h5 class="mb-4 text-xl font-semibold">
-    Búsqueda de error en interfaces
+    Troubleshooting interfaces
 </h5>
 
 <p-toolbar styleClass="mb-6 rounded-lg shadow-sm px-4 py-2 border">
     <ng-template #start>
         <div class="flex flex-wrap items-center gap-3">
-            <p-button type="button" label="Consultar" severity="info" outlined (click)="consultarLogs()"
+            <p-button type="button" label="Consult" severity="info" outlined (click)="consultarLogs()"
                 styleClass="!px-4 !py-2 !text-sm"></p-button>
         </div>
     </ng-template>
 
     <ng-template #end>
         <div class="flex flex-wrap items-center gap-2">
-            <p-button severity="danger" label="Borrar" icon="pi pi-trash" [disabled]="selectedLogs.length === 0"
+            <p-button severity="danger" label="Delete" icon="pi pi-trash" [disabled]="selectedLogs.length === 0"
                 outlined (onClick)="borrar()" styleClass="mr-2 !px-3 !py-2 !text-sm"></p-button>
 
-            <p-button label="Exportar Registros" icon="pi pi-upload" [disabled]="!logs.length" severity="secondary"
+            <p-button label="Export Data" icon="pi pi-upload" [disabled]="!logs.length" severity="secondary"
                 (click)="exportCSV()" styleClass="!px-3 !py-2 !text-sm"></p-button>
         </div>
     </ng-template>
@@ -32,13 +32,13 @@
         <ng-template pTemplate="caption">
             <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <h5 class="text-base font-semibold mb-0">
-                    Resultados
+                    Results
                 </h5>
 
                 <p-iconfield class="w-full md:w-72">
                     <p-inputicon styleClass="pi pi-search" />
                     <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                        placeholder="Filtrar..." class="w-full text-sm" />
+                        placeholder="Filter..." class="w-full text-sm" />
                 </p-iconfield>
             </div>
         </ng-template>
@@ -49,21 +49,21 @@
                 <th class="w-10 text-center align-middle">
                     <p-tableHeaderCheckbox />
                 </th>
-                <th class="px-3 py-2 text-center align-middle">Entidad</th>
-                <th class="px-3 py-2 text-center align-middle">Objeto</th>
+                <th class="px-3 py-2 text-center align-middle">Entity</th>
+                <th class="px-3 py-2 text-center align-middle">Object</th>
                 <th class="px-3 py-2 text-center align-middle" pSortableColumn="beginDate">
                     <div class="flex items-center justify-center gap-1">
-                        <span>Fecha inicio</span>
+                        <span>Start date</span>
                         <p-sortIcon field="beginDate" />
                     </div>
                 </th>
-                <th class="px-3 py-2 text-center align-middle">Último error</th>
-                <th class="px-3 py-2 text-center align-middle">Último documento</th>
-                <th class="px-3 py-2 text-center align-middle">Tiendas implicadas</th>
+                <th class="px-3 py-2 text-center align-middle">Last error</th>
+                <th class="px-3 py-2 text-center align-middle">Last document</th>
+                <th class="px-3 py-2 text-center align-middle">Shops involved</th>
                 <th class="px-3 py-2 min-w-[28rem] text-center align-middle">
-                    Último mensaje
+                    Last message
                 </th>
-                <th class="px-3 py-2 text-center align-middle">Traza</th>
+                <th class="px-3 py-2 text-center align-middle">Trace</th>
             </tr>
         </ng-template>
 
@@ -83,7 +83,7 @@
                     {{ log.beginDate | date:'yyyy-MM-dd HH:mm:ss' }}
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
-                    {{ log.lastError }}
+                    {{ log.lastError | date:'yyyy-MM-dd HH:mm:ss' }}
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
                     {{ log.lastDocumentId }}
@@ -109,7 +109,7 @@
 
     </p-table>
 </div>
-<p-dialog header="Ver traza" [(visible)]="traceDialogVisible" [modal]="true" [style]="{ width: '60vw' }"
+<p-dialog header="See trace" [(visible)]="traceDialogVisible" [modal]="true" [style]="{ width: '60vw' }"
     [contentStyle]="{ 'max-height': '60vh', 'overflow': 'auto' }" [draggable]="false" [resizable]="false"
     styleClass="rounded-lg shadow-md">
     <pre class="whitespace-pre-wrap font-mono text-xs leading-relaxed">
