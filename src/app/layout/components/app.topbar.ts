@@ -1,16 +1,12 @@
-import {Component, ElementRef, inject, ViewChild} from '@angular/core';
-import {MegaMenuItem} from 'primeng/api';
-import {RouterModule} from '@angular/router';
-import {CommonModule} from '@angular/common';
-import {StyleClassModule} from 'primeng/styleclass';
-import {LayoutService} from '@/layout/service/layout.service';
-import {Ripple} from 'primeng/ripple';
-import {InputText} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import {FormsModule} from '@angular/forms';
-import {MegaMenuModule} from 'primeng/megamenu';
-import {BadgeModule} from 'primeng/badge';
-import {OverlayBadge} from 'primeng/overlaybadge';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { StyleClassModule } from 'primeng/styleclass';
+import { LayoutService } from '@/layout/service/layout.service';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
     selector: '[app-topbar]',
@@ -19,12 +15,15 @@ import {OverlayBadge} from 'primeng/overlaybadge';
     template: `
         <div class="layout-topbar-start">
             <a class="layout-topbar-logo" routerLink="/">
-                <img src="/images/logo.png" class="h-45" />
+                <img
+                    [src]="topbarLogo.src"
+                    [class]="topbarLogo.class"
+                    alt="Logo"
+                />
             </a>
             <a #menuButton class="layout-menu-button" (click)="onMenuButtonClick()">
                 <i class="pi pi-chevron-right"></i>
             </a>
-
             <button class="app-config-button app-config-mobile-button" (click)="toggleConfigSidebar()">
                 <i class="pi pi-cog"></i>
             </button>
@@ -55,7 +54,27 @@ import {OverlayBadge} from 'primeng/overlaybadge';
     `
 })
 export class AppTopbar {
-    layoutService = inject(LayoutService);
+
+    constructor(public layoutService: LayoutService) { }
+
+    get topbarLogo() {
+
+        const menuMode = this.layoutService._config.menuMode;
+
+        const isSlim = menuMode === 'slim' || menuMode === 'slim-plus';
+
+        if (isSlim) {
+            return {
+                src: '/images/favicon.png',          // o isotipo
+                class: 'topbar-logo topbar-logo--slim'
+            };
+        }
+
+        return {
+            src: '/images/logo.png',
+            class: 'h-45'
+        };
+    }
 
     @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
