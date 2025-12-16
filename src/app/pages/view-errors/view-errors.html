@@ -23,8 +23,8 @@
 
 <div class="rounded-lg shadow-sm overflow-hidden">
     <p-table #dt [rows]="10" [columns]="cols" [paginator]="true" [value]="logs" [(selection)]="selectedLogs"
-        [globalFilterFields]="['classId','objectId','beginDate','lastError','lastDocumentId','shopsInvolved','lastMessage']" [rowHover]="true" dataKey="errorUid"
-        [style]="{ width: 'auto' }" *ngIf="foundLogErrors"
+        [globalFilterFields]="['classId','objectId','beginDate','lastError','lastDocumentId','shopsInvolved','lastMessage']"
+        [rowHover]="true" dataKey="errorUid" [style]="{ width: 'auto' }" *ngIf="foundLogErrors"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} errores" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 15, 20]" styleClass="w-full table-fixed" [scrollable]="true" scrollHeight="583px">
 
@@ -103,6 +103,14 @@
                 <td class="px-3 py-2 text-center align-middle">
                     <button pButton type="button" icon="pi pi-file-o" class="p-button-text p-button-rounded"
                         pTooltip="Ver traza" tooltipPosition="top" (click)="showTraceDialog(log)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="9" class="text-center py-6 text-gray-500">
+                    No se encontraron resultados para los criterios de búsqueda.
                 </td>
             </tr>
         </ng-template>
