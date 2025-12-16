@@ -10,3 +10,7 @@ html, body {
 p-table th, p-table td {
     text-align: center !important;
 }
+
+p-table tr td:nth-child(8){
+    text-align: justify !important;
+} 
