@@ -5,6 +5,6 @@ import { ViewMonitoringErrorsOutput } from './view-monitoring-erros-output/view-
 
 export default [
     { path: 'crud', component: Crud, data: { breadcrumb: "Vista Errores"}},
-    { path: 'view_monitoring_errors_input', component: ViewMonitoringErrorsInput, data: { breadcrumb: 'Monitorear Entrada' }},
-    { path: 'view_monitoring_errors_output', component: ViewMonitoringErrorsOutput, data: { breadcrumb: 'Monitorear Salida' }}
+    { path: 'view-monitoring-errors-input', component: ViewMonitoringErrorsInput, data: { breadcrumb: 'Monitorear Entrada' }},
+    { path: 'view-monitoring-errors-output', component: ViewMonitoringErrorsOutput, data: { breadcrumb: 'Monitorear Salida' }}
 ] as Routes;

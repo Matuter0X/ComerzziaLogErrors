@@ -4,12 +4,12 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   private storedRoutes = new Map<string, DetachedRouteHandle>();
 
   private getKey(route: ActivatedRouteSnapshot): string {
-    // La ruta que quieres cachear es 'view_errors'
+    // La ruta que quieres cachear es 'view-errors'
     return route.routeConfig?.path ?? '';
   }
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return route.routeConfig?.path === 'view_errors';
+    return route.routeConfig?.path === 'view-errors';
   }
 
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {

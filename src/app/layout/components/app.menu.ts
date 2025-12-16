@@ -28,17 +28,17 @@ export class AppMenu {
                     {
                         label: 'Visor de Errores',
                         icon: 'pi pi-fw pi-eye',
-                        routerLink: ['/view_errors']
+                        routerLink: ['/view-errors']
                     },
                     {
                         label: 'Monitorizar Entrada',
                         icon: 'pi pi-fw pi-arrow-circle-right',
-                        routerLink: ['/view_monitoring_errors_input']
+                        routerLink: ['/view-monitoring-errors-input']
                     },
                     {
                         label: 'Monitorizar Salida',
                         icon: 'pi pi-fw pi-arrow-circle-left',
-                        routerLink: ['/view_monitoring_errors_output']
+                        routerLink: ['/view-monitoring-errors-output']
                     }
                 ]
         }
