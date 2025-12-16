@@ -23,7 +23,7 @@
 
 <div class="rounded-lg shadow-sm overflow-hidden">
     <p-table #dt [rows]="10" [columns]="cols" [paginator]="true" [value]="logs" [(selection)]="selectedLogs"
-        [globalFilterFields]="['classId', 'objectId', 'lastDocumentId']" [rowHover]="true" dataKey="errorUid"
+        [globalFilterFields]="['classId','objectId','beginDate','lastError','lastDocumentId','shopsInvolved','lastMessage']" [rowHover]="true" dataKey="errorUid"
         [style]="{ width: 'auto' }" *ngIf="foundLogErrors"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} errores" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 15, 20]" styleClass="w-full table-fixed" [scrollable]="true" scrollHeight="583px">
