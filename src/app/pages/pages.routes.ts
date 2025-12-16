@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Crud } from './crud/crud';
+import { Crud } from './view-errors/view-errors';
 import { ViewMonitoringErrorsInput } from './view-monitoring-errors_input/view-monitoring-errors';
 import { ViewMonitoringErrorsOutput } from './view-monitoring-erros-output/view-monitoring-errors';
 

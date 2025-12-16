@@ -60,8 +60,8 @@ interface ExportColumn {
         ConfirmDialogModule,
         SplitButtonModule
     ],
-    templateUrl: `./crud.html`,
-    styleUrl: './crud.scss',
+    templateUrl: `./view-errors.html`,
+    styleUrl: './view-errors.scss',
     providers: [MessageService, ConfirmationService]
 })
 export class Crud implements OnInit {

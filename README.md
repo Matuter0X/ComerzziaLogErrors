@@ -64,4 +64,7 @@ Para utilizar el botón de ajustes, sencillamente pulsamos sobre él y se nos ab
     - Menu Profile: Permite ajustar el menu al comienzo o final de la web (start / end)
     - Menu Themes: Permite ajustar el color del menu de navegacion
     - Topbar Themes: Permite ajustar el color del menu horizontal superior topbar
-    
+
+## Boton Filtrar
+
+En la pestaña de visor de errores, al consultar los datos, este muestra un elemento de filtrado de datos en la tabla. El usuario puede filtrar por cualquier tipo de palabra, frase, numero, etc siempre que esté disponible en los datos recogidos. del caso contrario, aparecerá un mensaje de error para orientar al mismo.
