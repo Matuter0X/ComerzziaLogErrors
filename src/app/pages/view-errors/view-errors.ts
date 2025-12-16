@@ -22,7 +22,6 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { IntegrationErrorsService } from '@/openapi/openapi-erp-to-czz-input/api/integrationErrors.service';
 import { EntityIntegrationLogBean } from '@/openapi/openapi-erp-to-czz-input/model/entityIntegrationLogBean';
 import { forkJoin } from 'rxjs';
-import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 interface Column {
@@ -137,13 +136,11 @@ export class Crud implements OnInit {
     }
 
     //Funcion para exportar el excel de los datos de la tabla (OPCIONAL)
-    exportExcel() {
-        // Si no hay datos, no hacer nada
-        if (!this.logs || !this.logs.length) {
-            return;
-        }
+    async exportExcel() {
+        if (!this.logs?.length) return;
 
-        // Solo las columnas que quieres en el Excel (puedes ajustar nombres y campos)
+        const XLSX = await import('xlsx');
+
         const data = this.logs.map((log: any) => ({
             'ID Error': log.errorUid,
             'Clase': log.classId,
@@ -157,25 +154,27 @@ export class Crud implements OnInit {
             'Tiendas implicadas': log.shopsInvolved
         }));
 
-        // Crear hoja y libro de Excel
-        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
-        const workbook: XLSX.WorkBook = {
-            Sheets: { Logs: worksheet },
-            SheetNames: ['Logs']
-        };
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = { Sheets: { Logs: worksheet }, SheetNames: ['Logs'] };
 
-        // Generar el buffer del xlsx
-        const excelBuffer: ArrayBuffer = XLSX.write(workbook, {
-            bookType: 'xlsx',
-            type: 'array'
-        });
+        const excelBuffer: ArrayBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
-        // Crear Blob y descargar
         const blob = new Blob([excelBuffer], {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
         });
-        saveAs(blob, `integration-errors_${new Date().getTime()}.xlsx`);
+
+        this.downloadBlob(blob, `integration-errors_${Date.now()}.xlsx`);
     }
+
+    private downloadBlob(blob: Blob, filename: string) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
 
     //Funcion para borrar los logs
     borrar() {
