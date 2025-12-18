@@ -67,8 +67,7 @@
                             "buildTarget": "ultima-ng:build:production"
                         },
                         "development": {
-                            "buildTarget": "ultima-ng:build:development",
-                            "proxyConfig": "proxy.conf.json"
+                            "buildTarget": "ultima-ng:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
