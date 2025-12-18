@@ -47,7 +47,7 @@ export const appConfig: ApplicationConfig = {
             theme: { preset: MyPreset, options: { darkModeSelector: '.app-dark' } }
         }),
         // Llamada a las APIs
-        provideApi({ basePath:  '/erp-to-czz-processor' }),
-        provideapi2({ basePath: '/czz-to-erp-processor' })
+        provideApi({ basePath:  'https://suite-5.saas.comerzzia.com/erp-to-czz-processor' }),
+        provideapi2({ basePath: 'https://suite-5.saas.comerzzia.com/czz-to-erp-processor' })
     ]
 };
